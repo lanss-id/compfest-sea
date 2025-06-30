@@ -2,6 +2,12 @@
 
 import { FC, useRef, useState, useEffect } from "react";
 import { mat4, quat, vec2, vec3 } from "gl-matrix";
+import {
+    Modal,
+    ModalBody,
+    ModalContent,
+    ModalTrigger,
+} from "./AnimateModal";
 
 const discVertShaderSource = `#version 300 es
 
@@ -699,6 +705,7 @@ interface MenuItem {
     link: string;
     title: string;
     description: string;
+    nutrition?: string;
 }
 
 type ActiveItemCallback = (index: number) => void;
@@ -1258,18 +1265,22 @@ interface InfiniteMenuProps {
 
 const InfiniteMenu: FC<InfiniteMenuProps> = ({ items = [] }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const linkRef = useRef<HTMLAnchorElement>(null);
     const detailsRef = useRef<HTMLDivElement>(null);
     const [activeItem, setActiveItem] = useState<MenuItem | null>(null);
     const [shuffledItems, setShuffledItems] = useState<MenuItem[]>([]);
 
     useEffect(() => {
-        // Acak urutan item sekali saat komponen dimuat
         setShuffledItems([...items].sort(() => Math.random() - 0.5));
     }, [items]);
 
     useEffect(() => {
         if (!canvasRef.current || shuffledItems.length === 0) return;
+
+        // Initialize activeItem with the first item
+        if (shuffledItems.length > 0) {
+            setActiveItem(shuffledItems[0]);
+        }
+
         const menu = new InfiniteGridMenu(
             canvasRef.current,
             shuffledItems,
@@ -1296,15 +1307,8 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items = [] }) => {
         }
     };
 
-    const handleButtonClick = () => {
-        if (activeItem && linkRef.current) {
-            linkRef.current.href = activeItem.link;
-            linkRef.current.click();
-        }
-    };
-
     return (
-        <>
+        <Modal>
             <canvas
                 ref={canvasRef}
                 style={{
@@ -1332,8 +1336,7 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items = [] }) => {
                 )}
             </div>
             <div className="absolute bottom-10 left-1/2 z-20 -translate-x-1/2">
-                <button
-                    onClick={handleButtonClick}
+                <ModalTrigger
                     className="group pointer-events-auto rounded-full border border-white/30 bg-black/20 p-4 text-white backdrop-blur-md transition-all hover:bg-black/30"
                     aria-label="Open link for the selected item"
                 >
@@ -1352,11 +1355,60 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items = [] }) => {
                         <line x1="7" y1="17" x2="17" y2="7"></line>
                         <polyline points="7 7 17 7 17 17"></polyline>
                     </svg>
-                </button>
+                </ModalTrigger>
             </div>
-            <a ref={linkRef} style={{ display: "none" }} target="_blank" />
-        </>
+            <ModalBody>
+                <ModalContent>
+                    {activeItem && (
+                        <div className="p-4">
+                            <div className="w-full max-w-3xl mx-auto md:grid md:grid-cols-3 md:grid-rows-2 md:gap-4 flex flex-col gap-4 text-start">
+                                <div className="md:col-span-2 md:row-span-2 rounded-xl overflow-hidden h-64 md:h-auto bg-neutral-100 dark:bg-neutral-900">
+                                    <img src={activeItem.image} alt={activeItem.title} className="w-full h-full object-cover" />
+                                </div>
+                                <div className="md:col-span-1 md:row-span-1 p-4 rounded-xl bg-neutral-100 dark:bg-neutral-900 flex flex-col justify-center">
+                                    <h4 className="text-2xl font-bold text-neutral-800 dark:text-neutral-100">{activeItem.title}</h4>
+                                    <p className="text-sm text-neutral-600 dark:text-neutral-300 mt-2">{activeItem.description}</p>
+                                </div>
+                                <div className="md:col-span-1 md:row-span-1 p-4 rounded-xl bg-neutral-100 dark:bg-neutral-900 flex flex-col justify-between">
+                                    <div>
+                                        <h5 className="font-bold text-neutral-700 dark:text-neutral-200">Info Nutrisi</h5>
+                                        <p className="text-sm text-neutral-600 dark:text-neutral-300 mt-1">{activeItem.nutrition}</p>
+                                    </div>
+                                    <div className="flex items-center mt-4">
+                                        <TruckIcon className="w-5 h-5 text-neutral-600 dark:text-neutral-300 mr-2 shrink-0" />
+                                        <p className="text-xs text-neutral-600 dark:text-neutral-300">Pengiriman ke kota-kota besar di Indonesia.</p>
+                                    </div>
+                                    <div className="mt-4 text-start">
+                                        <p className="text-xl font-bold text-neutral-800 dark:text-neutral-200">Rp 55.000</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </ModalContent>
+            </ModalBody>
+        </Modal>
     );
 };
+
+const TruckIcon = ({ className }: { className?: string }) => (
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className={className}
+    >
+        <path d="M5 18H3c-.6 0-1-.4-1-1V7c0-.6.4-1 1-1h10c.6 0 1 .4 1 1v11" />
+        <path d="M14 9h4l4 4v4c0 .6-.4 1-1 1h-2" />
+        <circle cx="7.5" cy="18.5" r="2.5" />
+        <circle cx="17.5" cy="18.5" r="2.5" />
+    </svg>
+);
 
 export default InfiniteMenu;
