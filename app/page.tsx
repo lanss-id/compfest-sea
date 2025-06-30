@@ -9,7 +9,7 @@ import MenuSection from '@/components/MenuSection';
 export default function HomePage() {
     return (
         <>
-            <main className="">
+            <main className="pt-20">
                 <section id='hero-section' className="relative w-full min-h-screen flex items-center justify-center">
                     <Beams />
                     <div className="pointer-events-none absolute inset-0 z-10" style={{
