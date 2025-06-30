@@ -56,6 +56,9 @@ export default function HomePage() {
                         </div>
                     </div>
                 </section>
+
+                <section id='testimoni-section' className="relative w-full min-h-screen flex items-center justify-center">
+                </section>
             </main>
             <Footer />
         </>
