@@ -4,11 +4,12 @@ import SplitText from '@/components/SplitText';
 import { ShimmerButton } from '@/components/magicui/shimmer-button';
 import ListFitur from '@/components/ListFitur';
 import Footer from '@/components/Footer';
+import MenuSection from '@/components/MenuSection';
 
 export default function HomePage() {
     return (
         <>
-            <main className="relative w-full min-h-screen flex items-center justify-center text-center text-white">
+            <main className="">
                 <section id='hero-section' className="relative w-full min-h-screen flex items-center justify-center">
                     <Beams />
                     <div className="pointer-events-none absolute inset-0 z-10" style={{
@@ -36,7 +37,24 @@ export default function HomePage() {
                     </div>
                 </section>
                 <section id='menu-section' className="relative w-full min-h-screen flex items-center justify-center">
-                    
+                    <div className="pointer-events-none absolute inset-0 z-10" style={{
+                        background: `
+                            radial-gradient(ellipse at center, rgba(0,0,0,0) 35%, rgba(0,0,0,0.8) 80%, rgba(0,0,0,1) 100%),
+                            linear-gradient(to right, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 20%, rgba(0,0,0,0) 80%, rgba(0,0,0,0.8) 100%),
+                            linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 20%, rgba(0,0,0,0) 80%, rgba(0,0,0,0.8) 100%)
+                        `
+                    }} />
+                    <div className="relative z-20 flex flex-col items-center justify-center w-full text-center py-16">
+                        <h2 className="text-5xl md:text-7xl font-bold text-white">
+                            <SplitText text="Our Menu" splitType="words" />
+                        </h2>
+                        <p className="mt-6 max-w-2xl text-lg text-neutral-300">
+                            Geser untuk menjelajahi berbagai pilihan menu sehat kami.
+                        </p>
+                        <div className="mt-10 w-full h-[80vh]">
+                            <MenuSection />
+                        </div>
+                    </div>
                 </section>
             </main>
             <Footer />
