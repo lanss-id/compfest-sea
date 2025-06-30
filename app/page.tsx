@@ -5,12 +5,10 @@ import { ShimmerButton } from '@/components/magicui/shimmer-button';
 import ListFitur from '@/components/ListFitur';
 import Footer from '@/components/Footer';
 import MenuSection from '@/components/MenuSection';
-import { NavbarDemo } from '@/components/Navbar';
 
 export default function HomePage() {
     return (
         <>
-            <NavbarDemo />
             <main className="pt-20">
                 <section id='hero-section' className="relative w-full min-h-screen flex items-center justify-center">
                     <Beams />
