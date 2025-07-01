@@ -2,6 +2,9 @@
 
 Aplikasi web untuk layanan katering sehat custom, delivery seluruh Indonesia.
 
+**🌐 [Lihat aplikasi live di sini](https://compfest-sea-nine.vercel.app/)**
+**💻 [Repository GitHub](https://github.com/lanss-id/compfest-sea)**
+
 ## 🚀 Setup & Menjalankan Aplikasi
 
 1. **Clone repository**
@@ -70,3 +73,6 @@ Fitur admin (dashboard, autentikasi, dsb) **belum diimplementasikan** pada versi
 ## 📝 Catatan
 - Untuk pengembangan lebih lanjut, silakan cek file `goals.md` untuk daftar fitur dan milestone.
 - Jika Anda ingin men-deploy aplikasi, silakan ikuti dokumentasi Next.js: https://nextjs.org/docs/app/building-your-application/deploying
+
+## 📖 Dokumentasi
+- Dokumentasi kode dan update tersedia di repository: [https://github.com/lanss-id/compfest-sea](https://github.com/lanss-id/compfest-sea)
