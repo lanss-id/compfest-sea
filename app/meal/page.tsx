@@ -1,11 +1,11 @@
 "use client"
 
 import React, { useState } from 'react';
-import { NavbarDemo } from '@/components/Navbar';
 import Beams from '@/components/Beams';
 import Footer from '@/components/Footer';
 import { ShimmerButton } from '@/components/magicui/shimmer-button';
 import { Modal, ModalBody, ModalContent, ModalTrigger } from '@/components/ui/AnimateModal';
+import Image from 'next/image';
 
 const mealPlans = [
     {
@@ -62,11 +62,6 @@ const mealPlans = [
 export default function MealPage() {
     const [selected, setSelected] = useState(null as null | typeof mealPlans[0]);
 
-    // Fungsi untuk menutup modal
-    const closeModal = () => {
-        setSelected(null);
-    };
-
     return (
         <>
             <main className="pt-24 min-h-screen bg-black relative">
@@ -83,9 +78,11 @@ export default function MealPage() {
                                     key={plan.title}
                                     className="bg-neutral-900/70 border border-neutral-800 rounded-2xl shadow-lg flex flex-col overflow-hidden hover:scale-[1.025] transition-transform duration-200"
                                 >
-                                    <img
+                                    <Image
                                         src={plan.image}
                                         alt={plan.title}
+                                        width={400}
+                                        height={192}
                                         className="w-full h-48 object-cover object-center"
                                         loading="lazy"
                                     />
@@ -111,9 +108,11 @@ export default function MealPage() {
                             {selected && (
                                 <ModalContent className="w-full max-w-2xl mx-auto bg-white dark:bg-neutral-900 rounded-2xl p-0 flex flex-col md:flex-row overflow-hidden">
                                     <div className="w-full md:w-1/2 aspect-square bg-neutral-100 dark:bg-neutral-900 flex items-center justify-center">
-                                        <img
+                                        <Image
                                             src={selected.image}
                                             alt={selected.title}
+                                            width={400}
+                                            height={400}
                                             className="object-cover w-full h-full"
                                         />
                                     </div>

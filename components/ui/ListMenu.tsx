@@ -8,6 +8,8 @@ import {
     ModalContent,
     ModalTrigger,
 } from "./AnimateModal";
+import Image from 'next/image';
+import React from "react";
 
 const discVertShaderSource = `#version 300 es
 
@@ -727,7 +729,7 @@ interface Camera {
     };
 }
 
-class InfiniteGridMenu {
+export class InfiniteGridMenu {
     private gl: WebGL2RenderingContext | null = null;
     private discProgram: WebGLProgram | null = null;
     private discVAO: WebGLVertexArrayObject | null = null;
@@ -959,7 +961,7 @@ class InfiniteGridMenu {
             this.items.map(
                 (item) =>
                     new Promise<HTMLImageElement>((resolve) => {
-                        const img = new Image();
+                        const img = new window.Image();
                         img.crossOrigin = "anonymous";
                         img.onload = () => resolve(img);
                         img.src = item.image;
@@ -1269,6 +1271,16 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items = [] }) => {
     const [activeItem, setActiveItem] = useState<MenuItem | null>(null);
     const [shuffledItems, setShuffledItems] = useState<MenuItem[]>([]);
 
+    const handleActiveItem = React.useCallback((index: number) => {
+        setActiveItem(shuffledItems[index]);
+    }, [shuffledItems]);
+
+    const handleMovementChange = React.useCallback((isMoving: boolean) => {
+        if (detailsRef.current) {
+            detailsRef.current.style.opacity = isMoving ? "0" : "1";
+        }
+    }, [detailsRef]);
+
     useEffect(() => {
         setShuffledItems([...items].sort(() => Math.random() - 0.5));
     }, [items]);
@@ -1284,10 +1296,10 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items = [] }) => {
         const menu = new InfiniteGridMenu(
             canvasRef.current,
             shuffledItems,
-            (index) => handleActiveItem(index),
-            (isMoving) => handleMovementChange(isMoving)
+            handleActiveItem,
+            handleMovementChange
         );
-        menu.run();
+        menu.run(performance.now());
         const handleResize = () => menu.resize();
         window.addEventListener("resize", handleResize);
 
@@ -1295,17 +1307,7 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items = [] }) => {
             window.removeEventListener("resize", handleResize);
             menu.dispose();
         };
-    }, [shuffledItems]);
-
-    const handleActiveItem = (index: number) => {
-        setActiveItem(shuffledItems[index]);
-    };
-
-    const handleMovementChange = (isMoving: boolean) => {
-        if (detailsRef.current) {
-            detailsRef.current.style.opacity = isMoving ? "0" : "1";
-        }
-    };
+    }, [shuffledItems, handleActiveItem, handleMovementChange]);
 
     return (
         <Modal>
@@ -1363,7 +1365,7 @@ const InfiniteMenu: FC<InfiniteMenuProps> = ({ items = [] }) => {
                         <div className="p-4">
                             <div className="w-full max-w-3xl mx-auto md:grid md:grid-cols-3 md:grid-rows-2 md:gap-4 flex flex-col gap-4 text-start">
                                 <div className="md:col-span-2 md:row-span-2 rounded-xl overflow-hidden h-64 md:h-auto bg-neutral-100 dark:bg-neutral-900">
-                                    <img src={activeItem.image} alt={activeItem.title} className="w-full h-full object-cover" />
+                                    <Image src={activeItem.image} alt={activeItem.title} width={400} height={400} className="w-full h-full object-cover" />
                                 </div>
                                 <div className="md:col-span-1 md:row-span-1 p-4 rounded-xl bg-neutral-100 dark:bg-neutral-900 flex flex-col justify-center">
                                     <h4 className="text-2xl font-bold text-neutral-800 dark:text-neutral-100">{activeItem.title}</h4>

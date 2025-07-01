@@ -13,10 +13,7 @@ export interface ShimmerButtonProps extends ComponentPropsWithoutRef<"button"> {
     as?: React.ElementType;
 }
 
-export const ShimmerButton = React.forwardRef<
-    HTMLElement,
-    ShimmerButtonProps
->(
+export const ShimmerButton = React.forwardRef<HTMLButtonElement, ShimmerButtonProps>(
     (
         {
             shimmerColor = "#ffffff",
@@ -26,13 +23,12 @@ export const ShimmerButton = React.forwardRef<
             background = "rgba(0, 0, 0, 1)",
             className,
             children,
-            as: Comp = "button",
             ...props
         },
-        ref,
+        ref
     ) => {
         return (
-            <Comp
+            <button
                 style={
                     {
                         "--spread": "90deg",
@@ -90,9 +86,9 @@ export const ShimmerButton = React.forwardRef<
                         "absolute -z-20 [background:var(--bg)] [border-radius:var(--radius)] [inset:var(--cut)]",
                     )}
                 />
-            </Comp>
+            </button>
         );
-    },
+    }
 );
 
 ShimmerButton.displayName = "ShimmerButton";
